@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,18 +8,21 @@
     :root{
       --bg1:#050514;
       --bg2:#0b0b2d;
-      --card:#ffffffea;
+      --card: rgba(255,255,255,0.92);
+      --card2: rgba(255,255,255,0.86);
       --ink:#101027;
-      --muted:#4a4a6a;
+      --muted:#54547a;
       --shadow: 0 18px 45px rgba(0,0,0,.35);
-      --r:22px;
+      --shadow2: 0 28px 70px rgba(0,0,0,.45);
+      --r: 22px;
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:#fff;
-      min-height:100vh;
       overflow:hidden;
       background:
         radial-gradient(1200px 700px at 50% 85%, rgba(80,110,255,.16), transparent 60%),
@@ -27,41 +30,33 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
     }
 
-    /* звёзды */
-    .stars, .stars:before, .stars:after{
-      content:"";
-      position:absolute;
-      inset:-200px;
-      background-image:
-        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9) 50%, transparent 55%),
-        radial-gradient(1px 1px at 120px 80px, rgba(255,255,255,.8) 50%, transparent 55%),
-        radial-gradient(1px 1px at 220px 140px, rgba(255,255,255,.7) 50%, transparent 55%),
-        radial-gradient(2px 2px at 320px 200px, rgba(255,255,255,.8) 50%, transparent 55%),
-        radial-gradient(1px 1px at 420px 260px, rgba(255,255,255,.6) 50%, transparent 55%),
-        radial-gradient(1px 1px at 520px 320px, rgba(255,255,255,.7) 50%, transparent 55%),
-        radial-gradient(2px 2px at 620px 380px, rgba(255,255,255,.9) 50%, transparent 55%),
-        radial-gradient(1px 1px at 720px 440px, rgba(255,255,255,.7) 50%, transparent 55%);
-      background-size: 800px 600px;
-      opacity:.55;
-      animation: drift 80s linear infinite;
+    /* animated starfield canvas */
+    #stars{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
       pointer-events:none;
-    }
-    .stars:before{opacity:.35; animation-duration:120s; transform:translate3d(0,0,0) scale(1.15);}
-    .stars:after{opacity:.25; animation-duration:160s; transform:translate3d(0,0,0) scale(1.35);}
-    @keyframes drift{
-      from{transform:translateY(0)}
-      to{transform:translateY(300px)}
     }
 
     .topbar{
       position:relative;
+      z-index:2;
       display:flex;
       justify-content:space-between;
       align-items:center;
       padding:18px 22px;
       gap:16px;
-      z-index:2;
     }
+
+    .left-actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
     .pill{
       display:inline-flex;
       align-items:center;
@@ -71,25 +66,37 @@
       padding:12px 16px;
       border-radius:999px;
       box-shadow: var(--shadow);
-      font-weight:700;
+      font-weight:800;
       letter-spacing:.2px;
       user-select:none;
       white-space:nowrap;
+      border:0;
+      cursor:pointer;
     }
-    .pill .stars-ui{font-weight:900; color:#101027; opacity:.9}
-    .right{
+    .pill:hover{ transform: translateY(-1px); }
+    .pill:active{ transform: translateY(0px); }
+
+    .pill .stars-ui{ font-weight:900; opacity:.9; }
+
+    .right-actions{
       display:flex;
-      gap:14px;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
     }
-    .ghost{
-      background:#ffffff;
+
+    .link-pill{
+      background:#fff;
       color:var(--ink);
       padding:10px 16px;
       border-radius:999px;
       box-shadow: var(--shadow);
-      font-weight:800;
+      font-weight:900;
       cursor:pointer;
       text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      border:0;
     }
 
     .wrap{
@@ -99,38 +106,8 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      padding:24px;
     }
-    .info{
-      position:absolute;
-      left:24px;
-      top:90px;
-      width:min(330px, calc(100vw - 48px));
-      background:var(--card);
-      color:var(--ink);
-      border-radius:18px;
-      box-shadow: var(--shadow);
-      padding:14px 16px;
-    }
-    .info h3{
-      margin:0 0 10px;
-      font-size:14px;
-      font-weight:900;
-      opacity:.9;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .row{
-      display:flex;
-      gap:10px;
-      padding:8px 0;
-      border-top:1px solid rgba(16,16,39,.08);
-      align-items:center;
-      font-size:14px;
-    }
-    .row:first-of-type{border-top:none}
-    .k{color:var(--muted); min-width:130px; font-weight:700}
-    .v{font-weight:900}
 
     .cta{
       text-decoration:none;
@@ -140,68 +117,465 @@
       font-size:46px;
       padding:26px 90px;
       border-radius:999px;
-      box-shadow: 0 28px 70px rgba(0,0,0,.45);
+      box-shadow: var(--shadow2);
       transition: transform .12s ease, box-shadow .12s ease;
+      text-align:center;
+      line-height:1;
+      border:0;
+      cursor:pointer;
     }
-    .cta:hover{transform:translateY(-2px)}
-    .cta:active{transform:translateY(1px)}
+    .cta:hover{ transform:translateY(-2px); }
+    .cta:active{ transform:translateY(1px); }
 
+    /* Footer */
     .footer{
-      position:absolute;
+      position:fixed;
       left:18px;
       bottom:16px;
       z-index:2;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
     }
-    .footer .ghost{opacity:.95}
+
+    /* Modal + Backdrop */
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      z-index:10;
+      display:none;
+      padding:20px;
+      align-items:flex-start;
+      justify-content:center;
+      overflow:auto;
+    }
+    .backdrop.open{ display:flex; }
+
+    .modal{
+      width:min(520px, 100%);
+      margin-top:60px;
+      background: var(--card);
+      color: var(--ink);
+      border-radius: 18px;
+      box-shadow: var(--shadow2);
+      padding: 16px;
+      position:relative;
+    }
+    .modal-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding: 6px 6px 10px 6px;
+      border-bottom: 1px solid rgba(16,16,39,.10);
+    }
+    .modal-title{
+      margin:0;
+      font-size:16px;
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .modal-sub{
+      margin:6px 0 0;
+      color: var(--muted);
+      font-size:13px;
+      font-weight:700;
+    }
+    .icon-btn{
+      border:0;
+      background:transparent;
+      cursor:pointer;
+      font-size:18px;
+      font-weight:900;
+      color:rgba(16,16,39,.65);
+      padding:6px 10px;
+      border-radius:10px;
+    }
+    .icon-btn:hover{ background: rgba(16,16,39,.06); }
+
+    .modal-body{
+      padding: 12px 6px 6px 6px;
+    }
+
+    .info-grid{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding: 6px 0 0;
+    }
+    .info-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px 10px;
+      border-radius:14px;
+      background: var(--card2);
+      border: 1px solid rgba(16,16,39,.06);
+    }
+    .k{
+      min-width: 140px;
+      color: var(--muted);
+      font-weight:900;
+      font-size:13px;
+    }
+    .v{
+      font-weight:1000;
+      font-size:13px;
+    }
+
+    /* Form */
+    .form{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    label{
+      font-size:13px;
+      font-weight:900;
+      color: var(--muted);
+    }
+    input, textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(16,16,39,.15);
+      padding:12px 12px;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+      color: var(--ink);
+      font-family: inherit;
+    }
+    textarea{ min-height:120px; resize:vertical; }
+
+    .row-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      padding-top:6px;
+    }
+    .btn{
+      border:0;
+      border-radius:999px;
+      padding:10px 16px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: var(--shadow);
+      background:#fff;
+      color: var(--ink);
+    }
+    .btn.primary{
+      background: #111129;
+      color:#fff;
+      box-shadow: var(--shadow2);
+    }
+    .note{
+      font-size:12px;
+      color: var(--muted);
+      font-weight:700;
+      margin:0;
+      line-height:1.35;
+    }
+
+    @media (max-width: 520px){
+      .cta{ font-size:34px; padding:22px 44px; }
+      .k{ min-width: 120px; }
+      .topbar{ padding:14px 14px; }
+    }
   </style>
 </head>
 <body>
-  <div class="stars"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
 
-  <div class="topbar">
-    <div style="display:flex; gap:12px; align-items:center;">
-      <div class="pill"><span class="stars-ui">☆☆☆☆☆</span> Rate</div>
-      <div class="pill">Information about file</div>
+  <header class="topbar">
+    <div class="left-actions">
+      <button class="pill" type="button" id="rateBtn" title="Rate (demo only)">
+        <span class="stars-ui">☆☆☆☆☆</span> Rate
+      </button>
+
+      <button class="pill" type="button" id="infoBtn">
+        Information about file
+      </button>
     </div>
 
-    <div class="right">
-      <a class="ghost" href="#" onclick="alert('Demo'); return false;">Login</a>
-      <a class="ghost" href="#" onclick="alert('Demo'); return false;">Signup</a>
+    <div class="right-actions">
+      <a class="link-pill" href="https://github.com/login" target="_blank" rel="noopener">Login</a>
+      <a class="link-pill" href="https://github.com/signup" target="_blank" rel="noopener">Signup</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <a class="cta" id="downloadBtn" href="#" rel="noopener" target="_blank">Download</a>
+  </main>
+
+  <div class="footer">
+    <button class="link-pill" type="button" id="reportBtn">Report abuse</button>
+  </div>
+
+  <!-- INFO MODAL -->
+  <div class="backdrop" id="infoBackdrop" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="infoTitle">File information</h2>
+          <p class="modal-sub" id="infoSub">Details provided by the publisher.</p>
+        </div>
+        <button class="icon-btn" type="button" data-close="info" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="info-grid">
+          <div class="info-row">
+            <div class="k">Downloads</div>
+            <div class="v" id="metaDownloads">—</div>
+          </div>
+          <div class="info-row">
+            <div class="k">Version</div>
+            <div class="v" id="metaVersion">—</div>
+          </div>
+          <div class="info-row">
+            <div class="k">File type</div>
+            <div class="v" id="metaType">—</div>
+          </div>
+          <div class="info-row">
+            <div class="k">File size</div>
+            <div class="v" id="metaSize">—</div>
+          </div>
+          <div class="info-row">
+            <div class="k">Release page</div>
+            <div class="v"><a id="metaReleaseLink" href="#" target="_blank" rel="noopener">Open on GitHub</a></div>
+          </div>
+
+          <p class="note">
+            Tip: store downloadable files in GitHub Releases and point the button to the release asset URL.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="wrap">
-    <div class="info">
-      <h3>📁 Информация</h3>
-      <div class="row"><div class="k">⬇️ Downloads</div><div class="v" id="dls">—</div></div>
-      <div class="row"><div class="k">⭐ Rating</div><div class="v" id="rating">—</div></div>
-      <div class="row"><div class="k">🧷 File type</div><div class="v">.ZIP archive</div></div>
-      <div class="row"><div class="k">📦 File size</div><div class="v" id="size">—</div></div>
-      <div class="row"><div class="k">🛡️ Notes</div><div class="v">From GitHub Releases</div></div>
-    </div>
+  <!-- REPORT MODAL -->
+  <div class="backdrop" id="reportBackdrop" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="reportTitle">Report / Feedback</h2>
+          <p class="modal-sub">Send us your issue details. (Submitting to Telegram can be added later.)</p>
+        </div>
+        <button class="icon-btn" type="button" data-close="report" aria-label="Close">✕</button>
+      </div>
 
-    <a class="cta" id="downloadBtn" href="#" rel="noopener">Download</a>
+      <div class="modal-body">
+        <form class="form" id="reportForm">
+          <div>
+            <label for="repEmail">Your email (optional)</label>
+            <input id="repEmail" name="email" type="email" placeholder="name@example.com" autocomplete="email" />
+          </div>
 
-    <div class="footer">
-      <a class="ghost" href="#" onclick="alert('Report sent (demo)'); return false;">Report abuse</a>
+          <div>
+            <label for="repType">Type</label>
+            <input id="repType" name="type" type="text" placeholder="Bug / Abuse / Question / Other" />
+          </div>
+
+          <div>
+            <label for="repMsg">Message</label>
+            <textarea id="repMsg" name="message" placeholder="Describe the issue or your feedback..." required></textarea>
+          </div>
+
+          <p class="note" id="reportNote">
+            Right now this form just confirms and logs the payload in the console.
+            Later you can send it to Telegram using your own backend / webhook.
+          </p>
+
+          <div class="row-actions">
+            <button class="btn" type="button" data-close="report">Cancel</button>
+            <button class="btn primary" type="submit">Send</button>
+          </div>
+        </form>
+
+        <div id="reportThanks" style="display:none; padding:10px 6px 0;">
+          <p style="margin:0; font-weight:1000;">Thanks! Your message was recorded.</p>
+          <p class="note" style="margin-top:6px;">You can now close this window.</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    // 1) Вставь сюда ссылку на реальный файл в GitHub Releases:
-    const DOWNLOAD_URL = "https://github.com/USER/REPO/releases/download/v1.0.0/YourFile.zip";
-
-    // 2) Просто демо-значения для карточки:
-    const meta = {
-      downloads: "2.4k+",
-      rating: "4.7/5",
-      size: "~105 MB"
+    /********************
+     * CONFIG (EDIT THIS)
+     ********************/
+    const CONFIG = {
+      downloadUrl: "https://github.com/USER/REPO/releases/download/v1.0.0/YourFile.zip",
+      releaseUrl:  "https://github.com/USER/REPO/releases/tag/v1.0.0",
+      meta: {
+        downloads: "—",          // keep honest; you can later fetch real values
+        version: "v1.0.0",
+        type: ".ZIP archive",
+        size: "~105 MB"
+      }
     };
 
-    document.getElementById("downloadBtn").href = DOWNLOAD_URL;
-    document.getElementById("dls").textContent = meta.downloads;
-    document.getElementById("rating").textContent = meta.rating;
-    document.getElementById("size").textContent = meta.size;
+    /********************
+     * UI: buttons + modals
+     ********************/
+    const downloadBtn = document.getElementById("downloadBtn");
+    downloadBtn.href = CONFIG.downloadUrl;
+
+    // Fill info modal
+    document.getElementById("metaDownloads").textContent = CONFIG.meta.downloads;
+    document.getElementById("metaVersion").textContent = CONFIG.meta.version;
+    document.getElementById("metaType").textContent = CONFIG.meta.type;
+    document.getElementById("metaSize").textContent = CONFIG.meta.size;
+    const relLink = document.getElementById("metaReleaseLink");
+    relLink.href = CONFIG.releaseUrl;
+
+    const infoBackdrop = document.getElementById("infoBackdrop");
+    const reportBackdrop = document.getElementById("reportBackdrop");
+
+    function openModal(which){
+      const el = which === "info" ? infoBackdrop : reportBackdrop;
+      el.classList.add("open");
+      // focus first focusable
+      const focusable = el.querySelector("button, a, input, textarea");
+      if (focusable) focusable.focus();
+    }
+    function closeModal(which){
+      const el = which === "info" ? infoBackdrop : reportBackdrop;
+      el.classList.remove("open");
+    }
+
+    document.getElementById("infoBtn").addEventListener("click", ()=>openModal("info"));
+    document.getElementById("reportBtn").addEventListener("click", ()=>openModal("report"));
+
+    // close handlers
+    document.addEventListener("click", (e)=>{
+      const btn = e.target.closest("[data-close]");
+      if (btn){
+        closeModal(btn.getAttribute("data-close"));
+      }
+      // click outside modal closes
+      if (e.target === infoBackdrop) closeModal("info");
+      if (e.target === reportBackdrop) closeModal("report");
+    });
+
+    // Esc closes any open modal
+    document.addEventListener("keydown", (e)=>{
+      if (e.key !== "Escape") return;
+      if (infoBackdrop.classList.contains("open")) closeModal("info");
+      if (reportBackdrop.classList.contains("open")) closeModal("report");
+    });
+
+    // Rate button (demo only)
+    document.getElementById("rateBtn").addEventListener("click", ()=>{
+      alert("Demo: rating UI only. You can connect this to real reviews later.");
+    });
+
+    // Report form: demo submit
+    const reportForm = document.getElementById("reportForm");
+    const reportThanks = document.getElementById("reportThanks");
+
+    reportForm.addEventListener("submit", (e)=>{
+      e.preventDefault();
+
+      const payload = {
+        email: reportForm.email.value.trim(),
+        type: reportForm.type.value.trim(),
+        message: reportForm.message.value.trim(),
+        page: location.href,
+        ts: new Date().toISOString()
+      };
+
+      // TODO: later send to TG via your backend/webhook
+      console.log("REPORT_PAYLOAD:", payload);
+
+      reportForm.style.display = "none";
+      reportThanks.style.display = "block";
+    });
+
+    /********************
+     * Animated Starfield (Canvas)
+     ********************/
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+
+    function resize(){
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.dataset.dpr = String(dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    // Create star layers for parallax effect
+    function makeStars(count, speedMin, speedMax, sizeMin, sizeMax, alphaMin, alphaMax){
+      const stars = [];
+      for (let i=0; i<count; i++){
+        stars.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          r: sizeMin + Math.random() * (sizeMax - sizeMin),
+          a: alphaMin + Math.random() * (alphaMax - alphaMin),
+          s: speedMin + Math.random() * (speedMax - speedMin),
+          tw: Math.random() * Math.PI * 2
+        });
+      }
+      return stars;
+    }
+
+    let layer1 = makeStars(140, 0.08, 0.20, 0.6, 1.2, 0.25, 0.60);
+    let layer2 = makeStars(90,  0.18, 0.40, 0.9, 1.7, 0.30, 0.75);
+    let layer3 = makeStars(55,  0.35, 0.75, 1.2, 2.2, 0.35, 0.90);
+
+    function step(stars, dt){
+      for (const st of stars){
+        st.y += st.s * dt;
+        st.tw += 0.0025 * dt;
+        // wrap
+        if (st.y > window.innerHeight + 10){
+          st.y = -10;
+          st.x = Math.random() * window.innerWidth;
+        }
+      }
+    }
+
+    function draw(stars){
+      for (const st of stars){
+        const twinkle = 0.18 * Math.sin(st.tw);
+        const alpha = Math.max(0, Math.min(1, st.a + twinkle));
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+      }
+    }
+
+    let last = performance.now();
+    function loop(now){
+      const dt = Math.min(40, now - last); // clamp
+      last = now;
+
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      step(layer1, dt);
+      step(layer2, dt);
+      step(layer3, dt);
+
+      // slight glow
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      draw(layer1);
+      draw(layer2);
+      draw(layer3);
+      ctx.restore();
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
   </script>
 </body>
 </html>
