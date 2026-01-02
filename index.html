@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Download</title>
+  <style>
+    :root{
+      --bg1:#050514;
+      --bg2:#0b0b2d;
+      --card:#ffffffea;
+      --ink:#101027;
+      --muted:#4a4a6a;
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --r:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:#fff;
+      min-height:100vh;
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 700px at 50% 85%, rgba(80,110,255,.16), transparent 60%),
+        radial-gradient(900px 500px at 30% 20%, rgba(140,70,255,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
+
+    /* звёзды */
+    .stars, .stars:before, .stars:after{
+      content:"";
+      position:absolute;
+      inset:-200px;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9) 50%, transparent 55%),
+        radial-gradient(1px 1px at 120px 80px, rgba(255,255,255,.8) 50%, transparent 55%),
+        radial-gradient(1px 1px at 220px 140px, rgba(255,255,255,.7) 50%, transparent 55%),
+        radial-gradient(2px 2px at 320px 200px, rgba(255,255,255,.8) 50%, transparent 55%),
+        radial-gradient(1px 1px at 420px 260px, rgba(255,255,255,.6) 50%, transparent 55%),
+        radial-gradient(1px 1px at 520px 320px, rgba(255,255,255,.7) 50%, transparent 55%),
+        radial-gradient(2px 2px at 620px 380px, rgba(255,255,255,.9) 50%, transparent 55%),
+        radial-gradient(1px 1px at 720px 440px, rgba(255,255,255,.7) 50%, transparent 55%);
+      background-size: 800px 600px;
+      opacity:.55;
+      animation: drift 80s linear infinite;
+      pointer-events:none;
+    }
+    .stars:before{opacity:.35; animation-duration:120s; transform:translate3d(0,0,0) scale(1.15);}
+    .stars:after{opacity:.25; animation-duration:160s; transform:translate3d(0,0,0) scale(1.35);}
+    @keyframes drift{
+      from{transform:translateY(0)}
+      to{transform:translateY(300px)}
+    }
+
+    .topbar{
+      position:relative;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 22px;
+      gap:16px;
+      z-index:2;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      background:#fff;
+      color:var(--ink);
+      padding:12px 16px;
+      border-radius:999px;
+      box-shadow: var(--shadow);
+      font-weight:700;
+      letter-spacing:.2px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .pill .stars-ui{font-weight:900; color:#101027; opacity:.9}
+    .right{
+      display:flex;
+      gap:14px;
+    }
+    .ghost{
+      background:#ffffff;
+      color:var(--ink);
+      padding:10px 16px;
+      border-radius:999px;
+      box-shadow: var(--shadow);
+      font-weight:800;
+      cursor:pointer;
+      text-decoration:none;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:2;
+      height:calc(100vh - 80px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .info{
+      position:absolute;
+      left:24px;
+      top:90px;
+      width:min(330px, calc(100vw - 48px));
+      background:var(--card);
+      color:var(--ink);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      padding:14px 16px;
+    }
+    .info h3{
+      margin:0 0 10px;
+      font-size:14px;
+      font-weight:900;
+      opacity:.9;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      padding:8px 0;
+      border-top:1px solid rgba(16,16,39,.08);
+      align-items:center;
+      font-size:14px;
+    }
+    .row:first-of-type{border-top:none}
+    .k{color:var(--muted); min-width:130px; font-weight:700}
+    .v{font-weight:900}
+
+    .cta{
+      text-decoration:none;
+      background:#fff;
+      color:var(--ink);
+      font-weight:1000;
+      font-size:46px;
+      padding:26px 90px;
+      border-radius:999px;
+      box-shadow: 0 28px 70px rgba(0,0,0,.45);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .cta:hover{transform:translateY(-2px)}
+    .cta:active{transform:translateY(1px)}
+
+    .footer{
+      position:absolute;
+      left:18px;
+      bottom:16px;
+      z-index:2;
+    }
+    .footer .ghost{opacity:.95}
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="topbar">
+    <div style="display:flex; gap:12px; align-items:center;">
+      <div class="pill"><span class="stars-ui">☆☆☆☆☆</span> Rate</div>
+      <div class="pill">Information about file</div>
+    </div>
+
+    <div class="right">
+      <a class="ghost" href="#" onclick="alert('Demo'); return false;">Login</a>
+      <a class="ghost" href="#" onclick="alert('Demo'); return false;">Signup</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="info">
+      <h3>📁 Информация</h3>
+      <div class="row"><div class="k">⬇️ Downloads</div><div class="v" id="dls">—</div></div>
+      <div class="row"><div class="k">⭐ Rating</div><div class="v" id="rating">—</div></div>
+      <div class="row"><div class="k">🧷 File type</div><div class="v">.ZIP archive</div></div>
+      <div class="row"><div class="k">📦 File size</div><div class="v" id="size">—</div></div>
+      <div class="row"><div class="k">🛡️ Notes</div><div class="v">From GitHub Releases</div></div>
+    </div>
+
+    <a class="cta" id="downloadBtn" href="#" rel="noopener">Download</a>
+
+    <div class="footer">
+      <a class="ghost" href="#" onclick="alert('Report sent (demo)'); return false;">Report abuse</a>
+    </div>
+  </div>
+
+  <script>
+    // 1) Вставь сюда ссылку на реальный файл в GitHub Releases:
+    const DOWNLOAD_URL = "https://github.com/USER/REPO/releases/download/v1.0.0/YourFile.zip";
+
+    // 2) Просто демо-значения для карточки:
+    const meta = {
+      downloads: "2.4k+",
+      rating: "4.7/5",
+      size: "~105 MB"
+    };
+
+    document.getElementById("downloadBtn").href = DOWNLOAD_URL;
+    document.getElementById("dls").textContent = meta.downloads;
+    document.getElementById("rating").textContent = meta.rating;
+    document.getElementById("size").textContent = meta.size;
+  </script>
+</body>
+</html>
